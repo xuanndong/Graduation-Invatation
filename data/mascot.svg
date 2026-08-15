@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 148" fill="none">
+  <!-- Shadow -->
+  <ellipse cx="55" cy="144" rx="28" ry="4" fill="#00000018"/>
+
+  <!-- Gown body -->
+  <path d="M18 148 L18 118 Q18 90 55 88 Q92 90 92 118 L92 148 Z" fill="#1B3A6B"/>
+  <!-- Gown center panel -->
+  <path d="M44 90 L55 88 L66 90 L62 148 L48 148 Z" fill="#243F78"/>
+  <!-- Gold collar V-shape -->
+  <path d="M38 92 L55 108 L72 92" stroke="#C9A84C" stroke-width="2.5" stroke-linejoin="round" fill="none"/>
+
+  <!-- Neck -->
+  <rect x="48" y="76" width="14" height="15" rx="4" fill="#FFDAB9"/>
+
+  <!-- Head -->
+  <circle cx="55" cy="60" r="23" fill="#FFDAB9"/>
+
+  <!-- Hair top -->
+  <path d="M32 54 Q32 37 55 37 Q78 37 78 54 Q78 40 55 39 Q32 40 32 54 Z" fill="#2C1A0E"/>
+  <!-- Hair sides -->
+  <ellipse cx="33.5" cy="60" rx="4.5" ry="10" fill="#2C1A0E"/>
+  <ellipse cx="76.5" cy="60" rx="4.5" ry="10" fill="#2C1A0E"/>
+
+  <!-- Eyes -->
+  <ellipse cx="46" cy="63" rx="3.5" ry="4" fill="#1C1008"/>
+  <ellipse cx="64" cy="63" rx="3.5" ry="4" fill="#1C1008"/>
+  <circle cx="47.5" cy="61.5" r="1.2" fill="white"/>
+  <circle cx="65.5" cy="61.5" r="1.2" fill="white"/>
+
+  <!-- Blush -->
+  <ellipse cx="40" cy="69" rx="5" ry="3" fill="#F4A0A0" opacity="0.35"/>
+  <ellipse cx="70" cy="69" rx="5" ry="3" fill="#F4A0A0" opacity="0.35"/>
+
+  <!-- Smile -->
+  <path d="M48 72 Q55 78 62 72" stroke="#8B5040" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+
+  <!-- Graduation cap board -->
+  <rect x="31" y="39" width="48" height="6" rx="2" fill="#0F2344"/>
+  <!-- Cap top -->
+  <rect x="45" y="27" width="20" height="14" rx="2" fill="#0F2344"/>
+  <!-- Tassel -->
+  <line x1="79" y1="42" x2="86" y2="54" stroke="#C9A84C" stroke-width="2"/>
+  <rect x="83" y="54" width="5" height="11" rx="2" fill="#C9A84C"/>
+
+  <!-- Diploma scroll -->
+  <ellipse cx="74" cy="110" rx="3.5" ry="9" fill="#F5F0E8" stroke="#C9A84C" stroke-width="1.2"/>
+  <rect x="74" y="101" width="22" height="18" rx="0" fill="#F5F0E8"/>
+  <ellipse cx="96" cy="110" rx="3.5" ry="9" fill="#F5F0E8" stroke="#C9A84C" stroke-width="1.2"/>
+  <rect x="75" y="107" width="20" height="1.5" fill="#C9A84C" opacity="0.6"/>
+  <rect x="75" y="112" width="20" height="1.5" fill="#C9A84C" opacity="0.6"/>
+  <circle cx="85" cy="117" r="3" fill="#C9A84C" opacity="0.8"/>
+</svg>

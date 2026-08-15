@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Graduation Invitation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Dancing+Script:wght@600&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+</head>
+
+<body>
+
+    <!-- 3D Background -->
+    <canvas id="bg3d"></canvas>
+
+    <!-- PHASE 1: Envelope -->
+    <div class="scene" id="scene">
+        <div class="envelope" id="envelope">
+            <div class="env-back"></div>
+            <div class="env-flap" id="envFlap"></div>
+        </div>
+    </div>
+
+    <!-- PHASE 2: Letter card (slides up, then expands to modal) -->
+    <div class="letter-modal" id="letterModal">
+        <div class="letter-paper" id="letterPaper">
+
+            <!-- Bunting -->
+            <div class="bunting" aria-hidden="true">
+                <svg width="100%" height="24" viewBox="0 0 440 24" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="0" y1="4" x2="440" y2="4" stroke="#C9A84C" stroke-width="1.2" />
+                    <polygon points="18,4 32,4 25,20" fill="#1B3A6B" />
+                    <polygon points="52,4 66,4 59,20" fill="#C9A84C" />
+                    <polygon points="86,4 100,4 93,20" fill="#1B3A6B" />
+                    <polygon points="120,4 134,4 127,20" fill="#C9A84C" />
+                    <polygon points="154,4 168,4 161,20" fill="#1B3A6B" />
+                    <polygon points="188,4 202,4 195,20" fill="#C9A84C" />
+                    <polygon points="222,4 236,4 229,20" fill="#1B3A6B" />
+                    <polygon points="256,4 270,4 263,20" fill="#C9A84C" />
+                    <polygon points="290,4 304,4 297,20" fill="#1B3A6B" />
+                    <polygon points="324,4 338,4 331,20" fill="#C9A84C" />
+                    <polygon points="358,4 372,4 365,20" fill="#1B3A6B" />
+                    <polygon points="392,4 406,4 399,20" fill="#C9A84C" />
+                </svg>
+            </div>
+
+            <!-- Header -->
+            <div class="ltr-header">
+                <h1 class="ltr-title">Graduation</h1>
+                <p class="ltr-subtitle">Invitation</p>
+                <div class="ltr-rule"></div>
+            </div>
+
+            <!-- Greeting -->
+            <div class="ltr-greeting">
+                <p>Trân trọng kính mời</p>
+            </div>
+
+            <!-- Invite -->
+            <div class="ltr-invite">
+                <p class="invitee">Quý khách</p>
+                <p class="ltr-context">đến tham dự Lễ Trao Bằng Cử Nhân của</p>
+                <h2 class="grad-name">Vũ Xuân Đông</h2>
+            </div>
+
+            <!-- Headline / Quote -->
+            <div class="ltr-headline">
+                "Sự hiện diện của bạn là niềm vinh hạnh<br />và động lực to lớn cho chặng đường sắp tới."
+            </div>
+
+            <!-- Info row -->
+            <div class="ltr-info-row">
+                <div class="info-column">
+                    <div class="info-title">THỜI GIAN</div>
+                    <div class="info-main">Thứ Ba, 18 Tháng 08, 2026</div>
+                    <div class="info-sub">07:00 – 11:00</div>
+                </div>
+                <div class="info-divider"></div>
+                <div class="info-column">
+                    <div class="info-title">ĐỊA ĐIỂM</div>
+                    <div class="info-main"><a
+                            href="https://www.google.com/maps/search/?api=1&query=Đại+Học+Công+Nghiệp+Hà+Nội,+Số+298+Đường+Cầu+Diễn,+Minh+Khai,+Bắc+Từ+Liêm,+Hà+Nội"
+                            target="_blank" class="inline-map-link">Đại Học Công Nghiệp Hà Nội</a></div>
+                    <div class="info-sub">
+                        Số 298 Đ. Cầu Diễn,<br />Nhổn, Tây Tựu, Hà Nội
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline Section -->
+            <div class="timeline-container">
+                <div class="locations-info" style="margin-bottom: 20px;">
+                    <p class="timeline-note" style="margin-top: 0;"><strong>Địa điểm trao bằng:</strong> <a
+                            href="https://www.google.com/maps/search/?api=1&query=Nhà+A11,+Đại+Học+Công+Nghiệp+Hà+Nội"
+                            target="_blank" class="inline-map-link">Hội trường tầng 3 - Nhà A11</a></p>
+                    <p class="timeline-note">Phụ huynh và bạn bè có thể xem lễ trao bằng tại <a
+                            href="https://www.google.com/maps/search/?api=1&query=Nhà+đa+năng,+Đại+Học+Công+Nghiệp+Hà+Nội"
+                            target="_blank" class="inline-map-link">Nhà đa năng</a></p>
+                </div>
+
+                <button class="timeline-toggle" id="timelineToggle">
+                    Xem các mốc thời gian cụ thể <span class="toggle-icon">▼</span>
+                </button>
+                <div class="ltr-timeline hidden" id="timelineContent">
+                    <ul class="timeline-list">
+                        <li><strong>06:30</strong>: Nhận lễ phục</li>
+                        <li><strong>07:00</strong>: Sinh viên ca 1 vào hội trường</li>
+                        <li><strong>07:30</strong>: Khai mạc Lễ tốt nghiệp</li>
+                        <li><strong>08:10</strong>: Trao bằng tốt nghiệp (Ca 1)</li>
+                        <li><strong>09:15 - 09:30</strong>: Sinh viên ca 2 vào hội trường nhận bằng</li>
+                        <li><strong>10:35 - 10:50</strong>: Sinh viên ca 3 vào hội trường nhận bằng</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Personal Note -->
+            <div class="ltr-ps">
+                <div class="ps-title">Lưu ý nhỏ</div>
+                <div class="ps-content">
+                    Nếu theo lịch thì mình sẽ nhận bằng trong thời gian từ 7h30 - 8h.<br />
+                    Gọi cho mình nếu bạn đến nơi nhé hoặc nhắn tin nếu không gọi được nha.
+                </div>
+            </div>
+
+            <!-- Rule -->
+            <div class="ltr-bottom-rule">
+                <span class="rule-line"></span><span class="rule-icon">✦</span><span class="rule-line"></span>
+            </div>
+
+        </div><!-- /letter-paper -->
+    </div><!-- /letter-modal -->
+
+    <canvas id="confetti"></canvas>
+    <script src="data/bg3d.js"></script>
+    <script src="code.js"></script>
+</body>
+
+</html>

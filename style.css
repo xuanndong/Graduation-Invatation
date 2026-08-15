@@ -1,0 +1,420 @@
+/* RESET */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy:       #1B3A6B;
+  --navy-dark:  #0F2344;
+  --gold:       #C9A84C;
+  --gold-light: #E8D08C;
+  --gold-pale:  #F5ECC8;
+  --ivory:      #FFFEF5;
+  --cream:      #F8F3E8;
+  --text:       #0F1F3A;
+  --text-mid:   #3A5070;
+  --shadow:     rgba(15,35,68,0.22);
+  --env-w:      420px;
+  --env-h:      270px;
+  --half-w:     210px;
+}
+
+html, body { width: 100%; height: 100%; overflow: hidden; }
+
+body {
+  font-family: 'Lora', Georgia, serif;
+  /* Deep Navy gradient for a premium, formal graduation aesthetic */
+  background: linear-gradient(135deg, #0f1c32 0%, #1a2a47 100%);
+  display: flex; align-items: center; justify-content: center;
+  min-height: 100vh; color: var(--text);
+}
+/* ── 3D BACKGROUND ── */
+#bg3d {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── SCENE ── */
+.scene {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 22px;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.scene.fade-out { opacity: 0; transform: scale(0.93); pointer-events: none; }
+
+/* ── ENVELOPE ── */
+.envelope {
+  position: relative;
+  width: var(--env-w); height: var(--env-h);
+  cursor: pointer;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.55));
+  transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+}
+.envelope:hover { transform: translateY(-8px) scale(1.02); }
+
+.env-back {
+  position: absolute; inset: 0;
+  background-color: #f3ecda;
+  /* Subtle linen texture */
+  background-image: 
+    linear-gradient(90deg, rgba(201,168,76,0.03) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(201,168,76,0.03) 1px, transparent 1px);
+  background-size: 4px 4px;
+  border-radius: 2px;
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.05);
+}
+
+/* ── FLAP ── */
+.env-flap {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%; z-index: 6;
+  transform-origin: top center;
+  transition: transform 0.95s cubic-bezier(0.22,1,0.36,1);
+  pointer-events: none;
+}
+.env-flap::before {
+  content: ''; position: absolute; top: 0; left: 0;
+  /* Shallow V-shape */
+  border-left: var(--half-w) solid transparent;
+  border-right: var(--half-w) solid transparent;
+  border-top: 105px solid #ece4ce;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
+}
+/* Flap Texture using an after pseudo element */
+.env-flap::after {
+  content: ''; position: absolute; top: 0; left: 0;
+  border-left: var(--half-w) solid transparent;
+  border-right: var(--half-w) solid transparent;
+  border-top: 105px solid transparent;
+  
+  /* Create texture via repeating lines, but we can't easily texture CSS triangles.
+     Instead, we use a clip-path on a solid rect if we really wanted perfect texture.
+     For simplicity, the flat color with drop shadow already looks good, but let's 
+     at least give it a border-like edge. */
+}
+.env-flap.open { transform: rotateX(-185deg); }
+
+/* ── SEAL ── */
+.seal {
+  position: absolute; top: 62%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10; cursor: pointer;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  filter: drop-shadow(0 3px 8px rgba(0,0,0,0.4));
+}
+.seal.hidden {
+  opacity: 0; transform: translate(-50%,-50%) scale(0.4); pointer-events: none;
+}
+
+/* ── HINT ── */
+.hint {
+  font-family: 'Lora', serif; font-size: 14px; font-style: italic;
+  color: var(--gold-light); letter-spacing: 1px;
+  animation: hintPulse 2.5s ease-in-out infinite; transition: opacity 0.4s;
+}
+.hint.hidden { opacity: 0; pointer-events: none; }
+@keyframes hintPulse {
+  0%,100% { opacity: 0.5; transform: translateY(0); }
+  50%      { opacity: 1;   transform: translateY(-5px); }
+}
+
+/* ══════════════════════════════════════════
+   LETTER MODAL
+   ══════════════════════════════════════════ */
+.letter-modal {
+  position: fixed; inset: 0; z-index: 50;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 40px 16px;
+  /* Dark overlay - lighter so 3D bg is visible */
+  background: rgba(8,16,40,0.45);
+  backdrop-filter: blur(8px);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.5s ease;
+  overflow-y: auto;
+}
+.letter-modal.visible { opacity: 1; pointer-events: all; }
+
+/* Paper */
+.letter-paper {
+  position: relative; margin: auto;
+  background: var(--ivory);
+  background-image: repeating-linear-gradient(
+    transparent, transparent 29px,
+    rgba(201,168,76,0.10) 29px, rgba(201,168,76,0.10) 30px
+  );
+  border: 1.5px solid var(--gold);
+  border-radius: 8px;
+  max-width: 520px; width: 100%;
+  padding: 36px 44px 28px;
+  box-shadow: 0 28px 70px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,168,76,0.25);
+  /* Slide-up entry */
+  transform: translateY(60px) scale(0.96);
+  transition: transform 0.55s cubic-bezier(0.22,1,0.36,1), opacity 0.55s ease;
+  opacity: 0;
+}
+.letter-modal.visible .letter-paper {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+/* Inner border */
+.letter-paper::before {
+  content: ''; position: absolute; inset: 11px;
+  border: 1px solid rgba(201,168,76,0.28); border-radius: 4px; pointer-events: none;
+}
+/* Gold top line */
+.letter-paper::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  border-radius: 8px 8px 0 0;
+}
+
+/* Scrollbar */
+.letter-paper::-webkit-scrollbar { width: 4px; }
+.letter-paper::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+/* ── Close button ── */
+.close-btn {
+  position: absolute; top: 12px; right: 14px;
+  width: 28px; height: 28px;
+  background: none; border: 1.5px solid var(--gold);
+  color: var(--text-mid); border-radius: 50%;
+  font-size: 11px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, color 0.2s, transform 0.25s; z-index: 2;
+}
+.close-btn:hover { background: var(--gold); color: var(--ivory); transform: rotate(90deg); }
+
+/* ── LETTER CONTENT ── */
+.bunting { margin-bottom: 14px; }
+
+.ltr-header { text-align: center; margin-bottom: 16px; }
+.ltr-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px; font-weight: 700;
+  color: var(--navy-dark); line-height: 1.1;
+}
+.ltr-subtitle {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px; font-style: italic;
+  color: var(--gold); letter-spacing: 3px; margin-top: 2px;
+}
+.ltr-rule {
+  width: 60px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 9px auto 0;
+}
+
+.ltr-greeting { text-align: center; font-size: 14px; color: var(--text-mid); margin-bottom: 24px; font-style: italic; }
+
+.ltr-invite { text-align: center; font-size: 15px; color: var(--text-mid); line-height: 1.8; margin-bottom: 24px; }
+.invitee {
+  font-family: 'Playfair Display', serif; font-size: 20px;
+  color: var(--navy); font-weight: 700; letter-spacing: 1px; display: block; margin-bottom: 8px;
+}
+.ltr-context { font-style: italic; font-size: 14px; }
+.grad-name {
+  font-family: 'Dancing Script', cursive; font-size: 42px;
+  color: var(--gold); font-weight: 600; line-height: 1.2;
+  margin-top: 12px; margin-bottom: 8px;
+}
+
+.ltr-headline {
+  text-align: center; font-family: 'Lora', serif;
+  font-size: 15px; font-style: italic; color: var(--navy);
+  padding: 16px 24px; margin-bottom: 30px;
+  border-top: 1px solid rgba(201,168,76,0.3);
+  border-bottom: 1px solid rgba(201,168,76,0.3);
+  line-height: 1.7;
+}
+
+.ltr-info-row {
+  display: flex; align-items: stretch; justify-content: center;
+  margin-bottom: 28px;
+}
+.info-column {
+  flex: 1; text-align: center; padding: 0 16px;
+}
+.info-divider {
+  width: 1px; background: rgba(201,168,76,0.3);
+}
+.info-title {
+  font-family: 'Playfair Display', serif; font-size: 12px;
+  color: var(--gold); font-weight: 700; letter-spacing: 2px; margin-bottom: 8px;
+}
+.info-main { font-size: 14px; font-weight: 700; color: var(--navy-dark); margin-bottom: 4px; white-space: nowrap; }
+.info-sub  { font-size: 12px; color: var(--text-mid); line-height: 1.6; }
+
+.ltr-note {
+  text-align: center; font-size: 13px; color: var(--text-mid); font-style: italic;
+  margin-bottom: 16px;
+}
+
+.ltr-ps {
+    margin-top: 12px;
+    margin-bottom: 24px;
+    text-align: center;
+}
+.ps-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 26px;
+    color: var(--gold);
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+.ps-content {
+    font-size: 13px;
+    color: var(--text-mid);
+    font-style: italic;
+    line-height: 1.7;
+}
+
+.ltr-bottom-rule { display: flex; align-items: center; gap: 10px; }
+.rule-line { flex: 1; height: 1px; background: linear-gradient(90deg,transparent,var(--gold-light),transparent); }
+.rule-icon { color: var(--gold); font-size: 10px; }
+
+/* ── CONFETTI ── */
+#confetti { position: fixed; inset: 0; pointer-events: none; z-index: 200; width: 100%; height: 100%; }
+
+/* ── TIMELINE & MAP LINK ── */
+.timeline-container {
+    text-align: center;
+    margin-bottom: 24px;
+}
+.timeline-toggle {
+    background: transparent;
+    border: 1.5px solid var(--gold);
+    color: var(--navy-dark);
+    font-family: 'Lora', serif;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+.timeline-toggle:hover {
+    background: var(--gold-pale);
+}
+.timeline-toggle.active {
+    background: var(--gold);
+    color: var(--ivory);
+}
+.toggle-icon {
+    font-size: 10px;
+    transition: transform 0.3s;
+}
+.timeline-toggle.active .toggle-icon {
+    transform: rotate(180deg);
+}
+
+.ltr-timeline {
+    padding: 16px 24px;
+    background: var(--cream);
+    border-radius: 8px;
+    border: 1px solid rgba(201,168,76,0.3);
+    margin-top: 16px;
+    overflow: hidden;
+    max-height: 500px;
+    opacity: 1;
+    transition: max-height 0.4s ease, opacity 0.4s ease, margin-top 0.4s ease, padding 0.4s ease;
+    text-align: left;
+}
+.ltr-timeline.hidden {
+    max-height: 0;
+    opacity: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    border-color: transparent;
+}
+.timeline-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px 0;
+    font-size: 14px;
+    color: var(--text-mid);
+    line-height: 1.8;
+    text-align: left;
+}
+.timeline-list li {
+    margin-bottom: 8px;
+    position: relative;
+    padding-left: 16px;
+}
+.timeline-list li::before {
+    content: "•";
+    color: var(--gold);
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+.timeline-list strong {
+    color: var(--navy-dark);
+}
+.timeline-image {
+    text-align: center;
+    margin: 16px 0;
+}
+.timeline-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    border: 1.5px solid var(--gold-light);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.timeline-note {
+    font-size: 13px;
+    color: var(--navy);
+    font-style: italic;
+    text-align: center;
+    margin-top: 12px;
+}
+.inline-map-link {
+    color: var(--navy-dark);
+    text-decoration: underline;
+    text-decoration-color: var(--gold);
+    text-underline-offset: 4px;
+    font-weight: 700;
+    transition: color 0.3s, text-decoration-color 0.3s;
+    cursor: pointer;
+}
+.inline-map-link:hover {
+    color: var(--gold);
+    text-decoration-color: var(--navy-dark);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 500px) {
+  :root { 
+    --env-w: 90vw; 
+    --env-h: calc(90vw * 0.64); 
+    --half-w: 45vw; 
+  }
+  .env-flap::before, .env-flap::after { border-top-width: 25vw; }
+  
+  .letter-paper { padding: 32px 16px 20px; }
+  .ltr-title { font-size: 26px; }
+  .ltr-subtitle { font-size: 14px; }
+  .ltr-greeting { font-size: 13px; margin-bottom: 16px; }
+  .ltr-invite { font-size: 13px; margin-bottom: 16px; }
+  .invitee { font-size: 16px; }
+  .ltr-context { font-size: 12px; }
+  .grad-name { font-size: 32px; margin-top: 8px; margin-bottom: 4px; }
+  .ltr-headline { font-size: 13px; padding: 12px 16px; margin-bottom: 20px; }
+  
+  .ltr-info-row { flex-direction: column; gap: 12px; margin-bottom: 20px; }
+  .info-divider { width: 100%; height: 1px; }
+  .info-title { font-size: 10px; }
+  .info-main { font-size: 12px; }
+  .info-sub { font-size: 11px; }
+  
+  .ltr-note { font-size: 11px; margin-bottom: 12px; }
+  .ltr-timeline { padding: 12px 16px; }
+  .timeline-list { font-size: 12px; }
+  .timeline-note { font-size: 12px; }
+}
