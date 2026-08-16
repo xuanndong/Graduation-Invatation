@@ -1,6 +1,3 @@
-/**
- * code.js — Envelope open/close animation (no folding)
- */
 (function () {
   'use strict';
 
@@ -11,62 +8,51 @@
   const canvas      = document.getElementById('confetti');
   const ctx         = canvas.getContext('2d');
 
-  let state = 'idle'; // idle | opening | open | closing
+  let state = 'idle';
 
-  /* ─── OPEN ─────────────────────────────────────────── */
   function open() {
     if (state !== 'idle') return;
     state = 'opening';
 
     envelope.style.cursor = 'default';
 
-    // 1. Wait a moment
     setTimeout(() => {}, 200);
 
-    // 2. Flap lifts
     setTimeout(() => envFlap.classList.add('open'), 500);
 
-    // 3. Scene fades, modal slides in, trigger 3D background effect
     setTimeout(() => {
       scene.classList.add('fade-out');
       letterModal.classList.add('visible');
       if (window.bg3dAPI) window.bg3dAPI.triggerOpen();
     }, 1300);
 
-    // 4. Confetti
     setTimeout(() => {
       state = 'open';
       launchConfetti();
     }, 1900);
   }
 
-  /* ─── CLOSE ─────────────────────────────────────────── */
   function close() {
     if (state !== 'open') return;
     state = 'closing';
 
-    // Modal fades out, trigger 3D background reset
     letterModal.classList.remove('visible');
     if (window.bg3dAPI) window.bg3dAPI.triggerClose();
 
-    // Scene returns
     setTimeout(() => {
       scene.classList.remove('fade-out');
     }, 400);
 
-    // Flap closes
     setTimeout(() => {
       envFlap.classList.remove('open');
     }, 600);
 
-    // Reset
     setTimeout(() => {
       envelope.style.cursor = 'pointer';
       state = 'idle';
     }, 1500);
   }
 
-  /* ─── Events ────────────────────────────────────────── */
   envelope.addEventListener('click', open);
   const letterPaper = document.getElementById('letterPaper');
   if (letterPaper) {
@@ -75,7 +61,6 @@
   letterModal.addEventListener('click', e => { if (e.target === letterModal) close(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && state === 'open') close(); });
 
-  /* ─── Timeline Toggle ────────────────────────────────── */
   const timelineToggle = document.getElementById('timelineToggle');
   const timelineContent = document.getElementById('timelineContent');
   if (timelineToggle && timelineContent) {
@@ -85,10 +70,8 @@
     });
   }
 
-  // Auto-open
   setTimeout(open, 2800);
 
-  /* ─── Confetti ──────────────────────────────────────── */
   const pieces = [];
   let running = false;
 

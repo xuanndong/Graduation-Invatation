@@ -15,11 +15,8 @@
 </head>
 
 <body>
-
-    <!-- 3D Background -->
     <canvas id="bg3d"></canvas>
 
-    <!-- PHASE 1: Envelope -->
     <div class="scene" id="scene">
         <div class="envelope" id="envelope">
             <div class="env-back"></div>
@@ -27,11 +24,8 @@
         </div>
     </div>
 
-    <!-- PHASE 2: Letter card (slides up, then expands to modal) -->
     <div class="letter-modal" id="letterModal">
         <div class="letter-paper" id="letterPaper">
-
-            <!-- Bunting -->
             <div class="bunting" aria-hidden="true">
                 <svg width="100%" height="24" viewBox="0 0 440 24" xmlns="http://www.w3.org/2000/svg">
                     <line x1="0" y1="4" x2="440" y2="4" stroke="#C9A84C" stroke-width="1.2" />
@@ -50,31 +44,26 @@
                 </svg>
             </div>
 
-            <!-- Header -->
             <div class="ltr-header">
                 <h1 class="ltr-title">Graduation</h1>
                 <p class="ltr-subtitle">Invitation</p>
                 <div class="ltr-rule"></div>
             </div>
 
-            <!-- Greeting -->
             <div class="ltr-greeting">
                 <p>Trân trọng kính mời</p>
             </div>
 
-            <!-- Invite -->
             <div class="ltr-invite">
                 <p class="invitee">Quý khách</p>
                 <p class="ltr-context">đến tham dự Lễ Trao Bằng Cử Nhân của</p>
                 <h2 class="grad-name">Vũ Xuân Đông</h2>
             </div>
 
-            <!-- Headline / Quote -->
             <div class="ltr-headline">
                 "Sự hiện diện của bạn là niềm vinh hạnh<br />và động lực to lớn cho chặng đường sắp tới."
             </div>
 
-            <!-- Info row -->
             <div class="ltr-info-row">
                 <div class="info-column">
                     <div class="info-title">THỜI GIAN</div>
@@ -93,7 +82,6 @@
                 </div>
             </div>
 
-            <!-- Timeline Section -->
             <div class="timeline-container">
                 <div class="locations-info" style="margin-bottom: 20px;">
                     <p class="timeline-note" style="margin-top: 0;"><strong>Địa điểm trao bằng:</strong> <a
@@ -119,7 +107,6 @@
                 </div>
             </div>
 
-            <!-- Personal Note -->
             <div class="ltr-ps">
                 <div class="ps-title">Lưu ý nhỏ</div>
                 <div class="ps-content">
@@ -128,13 +115,12 @@
                 </div>
             </div>
 
-            <!-- Rule -->
             <div class="ltr-bottom-rule">
                 <span class="rule-line"></span><span class="rule-icon">✦</span><span class="rule-line"></span>
             </div>
 
-        </div><!-- /letter-paper -->
-    </div><!-- /letter-modal -->
+        </div>
+    </div>
 
     <canvas id="confetti"></canvas>
     <script src="data/bg3d.js"></script>
